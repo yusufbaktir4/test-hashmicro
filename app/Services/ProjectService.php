@@ -58,7 +58,7 @@ class ProjectService
             $project = Project::where('uuid', $this->projectUuid)
                       ->update([
                         'status' => $status,
-                        'updated_by' => Auth::user()->username,
+                        'updated_by' => Auth::user()->email,
                         'updated_at' => Project::dateFormat(now(), 'Y-m-d H:i:s')
                       ]);
 

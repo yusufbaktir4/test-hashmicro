@@ -2,59 +2,78 @@
 use App\Models\Project;
 ?>
 
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Detail Project') }}
-        </h2>
-    </x-slot>
+@extends('feature.layouts.layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="overflow-hidden shadow sm:rounded-md">
-                    <div class="bg-white px-4 py-5 sm:p-6">
+@section('content')
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Create Project</h2>
+
+            <div class="right-wrapper text-end">
+                <ol class="breadcrumbs" style="margin-right: 0.5rem !important;">
+                    <li>
+                        <a href="{{route('home')}}">
+                            <i class="bx bx-home-alt"></i>
+                        </a>
+                    </li>
+
+                    <li><span>Create Project</span></li>
+                </ol>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col">
+                <section class="card">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                        </div>
+
+                        <h2 class="card-title">{{$projectData->nama_proyek}}</h2>
+                    </header>
+                    <div class="card-body">
+
                         @if (session('success'))
-                            <div class="bg-indigo-500 border-l-4 border-indigo-500 text-white p-4 mb-4" role="alert">
-                                <p class="font-bold ml-3">Success</p>
-                                <p class="ml-3">{{ session('success') }}</p>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
                             </div>
                         @endif
 
                         @if (session('error'))
-                            <div class="bg-indigo-500 border-l-4 border-indigo-500 text-white p-4 mb-4" role="alert">
-                                <p class="font-bold ml-3">Error!</p>
-                                <p class="ml-3">{{ session('error') }}</p>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
                             </div>
                         @endif
 
-                        <div class="flex">
-                            <div class="py-2 justify-right mr-2">
+                        <div class="row mb-4">
+                            <div class="col-sm-2">
+                                <a href="{{route('feature.task.create', ['projectUuid' => $projectData->uuid])}}" class="btn btn-success">Create Task</a>
+                            </div>
+                            
+                            <div class="col-sm-2">
                                 <?php if ($projectData->status == $projectData::PROJECT_STATUS_NOT_STARTED): ?>
                                     <form method="POST" action="{{route('feature.project.changestate', ['project' => $projectData->uuid, 'status' => $projectData::PROJECT_STATUS_IN_PROGRESS])}}" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         
-                                        <button type="submit" onclick="return confirm('Are you sure to start this project?')" class="inline-flex justify-right rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500">Start Project</button>
+                                        <button type="submit" onclick="return confirm('Are you sure to start this project?')" class="btn btn-primary">Start Project</button>
                                     </form>
                                 <?php endif ?>
-                            </div>
-                            <div class="py-2 justify-right">
-                                <a href="{{route('feature.task.create', ['projectUuid' => $projectData->uuid])}}" class="inline-flex justify-right rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Create Task</a>
-                            </div>
-                            
+                            </div>                            
                         </div>
 
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-4">
-                            {{ $projectData->nama_proyek }}
-                        </h2>
-
-                        <div class="bg-gray-300 h-2 rounded-full overflow-hidden mb-2">
-                            <div class="bg-blue-500 h-full" style="width: {{ $projectData::getPersenCompleteProject($projectData) }}"></div>
+                        <h2 class="card-title mb-2">Progress: </h2>
+                        <div class="progress progress-xl progress-half-rounded m-2 mb-4">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ $projectData::getPersenCompleteProject($projectData) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $projectData::getPersenCompleteProject($projectData) }}%;">
+                                {{ $projectData::getPersenCompleteProject($projectData) }}%
+                            </div>
                         </div>
-                        <h4 class="text-md font-semibold text-black-500 text-center mb-6">{{ $projectData::getPersenCompleteProject($projectData) }} Complete</h4>
 
-                        <table class="min-w-full divide-y divide-gray-200 w-full mb-6">
+                        <table role="grid" style="width: 100%;">
                             <tr role="row" class="odd">
                                 <td class="border px-4 py-2 font-semibold">Project Name</td>
                                 <td class="border px-4 py-2">{{$projectData->nama_proyek}}</td>
@@ -97,21 +116,22 @@ use App\Models\Project;
                         </table>
 
                         <?php if ($projectData->tasks()->count() > 0): ?>
-                            <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-4">
-                                {{ __('Detail Tasks') }}
-                            </h2>
+                            <h2 class="card-title mt-4 mb-2">Detail Task</h2>
 
                             <div class="col" style="overflow-x: scroll;">
                                 {{$taskDt->html()->table(['class' => 'min-w-full divide-y divide-gray-200 w-full'])}}
                             </div>
                         <?php endif ?>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
-</x-app-layout>
+        <!-- end: page -->
+    </section>
+@endsection
 
+@section('add_js')
 <script type="text/javascript">
     {!!  $taskDt->html()->generateScripts() !!}
 </script>
+@endsection

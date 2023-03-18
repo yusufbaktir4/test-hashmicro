@@ -56,12 +56,12 @@ class TaskDataTable extends DataTable
                     $action = [
                         [
                             'title' => 'Edit',
-                            'class' => 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500',
+                            'class' => 'btn btn-primary',
                             'action' => route('feature.task.edit', ['task' => $query->uuid])
                         ],
                         [
                             'title' => 'Delete',
-                            'class' => 'bg-red-600 hover:bg-red-500 focus-visible:outline-red-500',
+                            'class' => 'btn btn-danger',
                             'is_delete' => true,
                             'textConfirmation' => 'Are you sure to delete '.$query->nama_task.' ?',
                             'action' => route('feature.task.destroy', ['task' => $query->uuid])
@@ -72,7 +72,7 @@ class TaskDataTable extends DataTable
                         $actionExtend = [   
                             [
                                 'title' => 'Completed',
-                                'class' => 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500',
+                                'class' => 'btn btn-success',
                                 'is_update' => true,
                                 'textConfirmation' => 'Are you sure to change task status to '. strtoupper(Task::getStatusMap(Task::TASK_COMPLETED)) . '?',
                                 'action' => route('feature.task.changestate', ['task' => $query->uuid, 'status' => Task::TASK_COMPLETED])

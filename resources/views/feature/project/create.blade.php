@@ -1,15 +1,50 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Project') }}
-        </h2>
-    </x-slot>
+@extends('feature.layouts.layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="overflow-hidden shadow sm:rounded-md">
-                    <div class="bg-white px-4 py-5 sm:p-6">
+@section('content')
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Create Project</h2>
+
+            <div class="right-wrapper text-end">
+                <ol class="breadcrumbs" style="margin-right: 0.5rem !important;">
+                    <li>
+                        <a href="{{route('home')}}">
+                            <i class="bx bx-home-alt"></i>
+                        </a>
+                    </li>
+
+                    <li><span>Create Project</span></li>
+                </ol>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col">
+                <section class="card">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                        </div>
+
+                        <h2 class="card-title">Project Form</h2>
+                    </header>
+                    <div class="card-body">
+
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
+                            </div>
+                        @endif
+
                         <form action="{{ $actionForm }}" method="POST" class="w-full max-w-lg">
                             @csrf
 
@@ -17,44 +52,44 @@
                                 @method('PUT')
                             <?php endif ?>
 
-                            <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="nama_proyek">
+                            <div class="mb-4 form-group">
+                                <label class="col-form-label" for="nama_proyek">
                                     Project Name
                                 </label>
-                                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nama_proyek" name="nama_proyek" type="text" value="{{$projectData['nama_proyek'] ?? old('nama_proyek')}}" placeholder="Project Name">
+                                <input class="form-control" id="nama_proyek" name="nama_proyek" type="text" value="{{$projectData['nama_proyek'] ?? old('nama_proyek')}}" placeholder="Project Name">
 
                                 @error('nama_proyek')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="nama_proyek">{{ $message}}</label>
                                 @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="start_date">
+                                <label class="col-form-label" for="start_date">
                                     Start Date
                                 </label>
-                                <input class="form-input block w-full mt-1" type="datetime-local" id="start_date" name="start_date" value="{{ isset($projectData['start_date']) ? \Carbon\Carbon::parse($projectData['start_date'])->format('Y-m-d\TH:i:s') : (!is_null(old('start_date')) ? \Carbon\Carbon::parse(old('start_date'))->format('Y-m-d\TH:i:s') : \Carbon\Carbon::now()->format('Y-m-d\TH:i:s')) }}">
+                                <input type="text" autocomplete="off" class="form-control datepicker" id="start_date" name="start_date" value="{{ !is_null(old('start_date')) ? \Carbon\Carbon::parse(old('start_date'))->format('Y-m-d') : (isset($projectData['start_date']) ? \Carbon\Carbon::parse($projectData['start_date'])->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')) }}">
 
                                 @error('start_date')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="start_date">{{ $message}}</label>
                                 @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="end_date">
+                                <label class="col-form-label" for="end_date">
                                     End Date
                                 </label>
-                                <input class="form-input block w-full mt-1" type="datetime-local" id="end_date" name="end_date" value="{{ isset($projectData['end_date']) ? \Carbon\Carbon::parse($projectData['end_date'])->format('Y-m-d\TH:i:s') : (!is_null(old('end_date')) ? \Carbon\Carbon::parse(old('end_date'))->format('Y-m-d\TH:i:s') : \Carbon\Carbon::now()->format('Y-m-d\TH:i:s')) }}">
+                                <input type="text" autocomplete="off" class="form-control datepicker" id="end_date" name="end_date" value="{{ !is_null(old('end_date')) ? \Carbon\Carbon::parse(old('end_date'))->format('Y-m-d') : (isset($projectData['end_date']) ? \Carbon\Carbon::parse($projectData['end_date'])->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d')) }}">
 
                                 @error('end_date')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="end_date">{{ $message}}</label>
                                 @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="email">
+                                <label class="col-form-label" for="payment_status">
                                     Payment Status
                                 </label>
-                                <select class="form-select block w-full mt-1" id="payment_status" name="payment_status">
+                                <select class="form-control" id="payment_status" name="payment_status">
                                     <?php if (!isset($projectData) && old('payment_status') == ''): ?>
                                         <option value="">Choose Payment Status</option>
                                         <?php foreach ($paymentStatuses as $keyStatus => $valueStatus): ?>
@@ -72,20 +107,18 @@
                                 </select>
 
                                 @error('payment_status')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="payment_status">{{ $message}}</label>
                                 @enderror
                             </div>
 
-                            <div class="flex items-center justify-between">
-                                <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                    Submit
-                                </button>
-                            </div>
+                            <footer class="card-footer text-start mt-2">
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </footer>
                         </form>
-
                     </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
-</x-app-layout>
+        <!-- end: page -->
+    </section>
+@endsection

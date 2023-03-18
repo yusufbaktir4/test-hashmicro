@@ -50,17 +50,17 @@ class ProjectDataTable extends DataTable
                     $action = [
                         [
                             'title' => 'Edit',
-                            'class' => 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500',
+                            'class' => 'btn btn-primary',
                             'action' => route('feature.project.edit', ['project' => $query->uuid])
                         ],
                         [
                             'title' => 'Show',
-                            'class' => 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500',
+                            'class' => 'btn btn-info',
                             'action' => route('feature.project.show', ['project' => $query->uuid])
                         ],
                         [
                             'title' => 'Delete',
-                            'class' => 'bg-red-600 hover:bg-red-500 focus-visible:outline-red-500',
+                            'class' => 'btn btn-danger',
                             'is_delete' => true,
                             'textConfirmation' => 'Are you sure to delete '.$query->nama_proyek.' ?',
                             'action' => route('feature.project.destroy', ['project' => $query->uuid])
@@ -71,7 +71,7 @@ class ProjectDataTable extends DataTable
                         $actionExtend = [   
                             [
                                 'title' => 'Start Project',
-                                'class' => 'bg-red-600 hover:bg-red-500 focus-visible:outline-red-500',
+                                'class' => 'btn btn-success',
                                 'is_update' => true,
                                 'textConfirmation' => 'Are you sure to change project status to '. strtoupper(Project::getStatusMap(Project::PROJECT_STATUS_IN_PROGRESS)) . '?',
                                 'action' => route('feature.project.changestate', ['project' => $query->uuid, 'status' => Project::PROJECT_STATUS_IN_PROGRESS])
@@ -83,7 +83,7 @@ class ProjectDataTable extends DataTable
                         $actionExtend = [   
                             [
                                 'title' => 'Finish Project',
-                                'class' => 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-500',
+                                'class' => 'btn btn-warning',
                                 'is_update' => true,
                                 'textConfirmation' => 'Are you sure to change project status to '. strtoupper(Project::getStatusMap(Project::PROJECT_STATUS_COMPLETED)) . '?',
                                 'action' => route('feature.project.changestate', ['project' => $query->uuid, 'status' => Project::PROJECT_STATUS_COMPLETED])

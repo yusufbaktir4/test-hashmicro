@@ -43,8 +43,8 @@ class ProjectController extends Controller
     {
         $validator = $request->validate([
             'nama_proyek' => 'required|string',
-            'start_date' => 'required|after:yesterday',
-            "end_date" => "required|after:start_date",
+            'start_date' => 'required|date_format:Y-m-d|after:yesterday',
+            "end_date" => "required|date_format:Y-m-d|after:start_date",
             "payment_status" => "required"
         ],
         [
@@ -113,8 +113,8 @@ class ProjectController extends Controller
     {
         $validator = $request->validate([
             'nama_proyek' => 'required|string',
-            'start_date' => 'required|after:tomorrow',
-            "end_date" => "required|after:start_date",
+            'start_date' => 'required|date_format:Y-m-d|after:yesterday',
+            "end_date" => "required|date_format:Y-m-d|after:start_date",
             "payment_status" => "required"
         ],
         [

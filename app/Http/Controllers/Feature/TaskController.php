@@ -114,9 +114,9 @@ class TaskController extends Controller
         $response = (new TaskService($id))->deleteFromDB();
 
         if($response['valid']) {
-            return redirect()->route('feature.project.index')->with('success', $response['msg']);
+            return back()->with('success', $response['msg']);
         } else {
-            return redirect()->route('feature.project.index')->with('error', $response['msg']);
+            return back()->with('error', $response['msg']);
         }
     }
 
@@ -126,9 +126,9 @@ class TaskController extends Controller
         $uuidProject = Project::where('id', $taskData->project_id)->first()->uuid;
 
         if($response['valid']) {
-            return redirect()->route('feature.project.show', ['project' => $uuidProject])->with('success', $response['msg']);
+            return back()->with('success', $response['msg']);
         } else {
-            return redirect()->route('feature.project.show', ['project' => $uuidProject])->with('error', $response['msg']);
+            return back()->with('error', $response['msg']);
         }
     }
 }

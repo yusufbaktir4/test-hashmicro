@@ -130,7 +130,7 @@ class Project extends Model
         $allTask = $projectData->tasks->count();
         $percent = ($allTask > 0) ? (int)ceil(($taskComplete / $allTask) * 100) : 0;
         
-        return $percent . '%';
+        return $percent;
     }
 
     public static function getProjectInProgress() {

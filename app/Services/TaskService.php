@@ -61,7 +61,7 @@ class TaskService
             $task = Task::where('uuid', $this->taskUuid)
                       ->update([
                         'status' => $status,
-                        'updated_by' => Auth::user()->username,
+                        'updated_by' => Auth::user()->email,
                         'updated_at' => Task::dateFormat(now(), 'Y-m-d H:i:s')
                       ]);
 

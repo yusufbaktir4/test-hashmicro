@@ -1,26 +1,47 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Task for ' . $projectData->nama_proyek) }}
-        </h2>
-    </x-slot>
+@extends('feature.layouts.layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="overflow-hidden shadow sm:rounded-md">
-                    <div class="bg-white px-4 py-5 sm:p-6">
+@section('content')
+    <section role="main" class="content-body">
+        <header class="page-header">
+            <h2>Create Task</h2>
+
+            <div class="right-wrapper text-end">
+                <ol class="breadcrumbs" style="margin-right: 0.5rem !important;">
+                    <li>
+                        <a href="{{route('home')}}">
+                            <i class="bx bx-home-alt"></i>
+                        </a>
+                    </li>
+
+                    <li><span>Create Task</span></li>
+                </ol>
+            </div>
+        </header>
+
+        <div class="row">
+            <div class="col">
+                <section class="card">
+                    <header class="card-header">
+                        <div class="card-actions">
+                            <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                            <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                        </div>
+
+                        <h2 class="card-title">Create Task for {{$projectData->nama_proyek}}</h2>
+                    </header>
+                    <div class="card-body">
+
                         @if (session('success'))
-                            <div class="bg-indigo-500 border-l-4 border-indigo-500 text-white p-4 mb-4" role="alert">
-                                <p class="font-bold ml-3">Success</p>
-                                <p class="ml-3">{{ session('success') }}</p>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
                             </div>
                         @endif
 
                         @if (session('error'))
-                            <div class="bg-indigo-500 border-l-4 border-indigo-500 text-white p-4 mb-4" role="alert">
-                                <p class="font-bold ml-3">Error!</p>
-                                <p class="ml-3">{{ session('error') }}</p>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Error!</strong> {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-hidden="true" aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -32,32 +53,32 @@
                             <?php endif ?>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="nama_task">
+                                <label class="col-form-label" for="nama_task">
                                     Task Name
                                 </label>
-                                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nama_task" name="nama_task" type="text" value="{{$taskData['nama_task'] ?? old('nama_task')}}" placeholder="Task Name">
+                                <input class="form-control" id="nama_task" name="nama_task" type="text" value="{{$taskData['nama_task'] ?? old('nama_task')}}" placeholder="Task Name">
 
                                 @error('nama_task')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="nama_task">{{ $message}}</label>
                                 @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="description">
+                                <label class="col-form-label" for="description">
                                     Description
                                 </label>
-                                <textarea id="description" name="description" class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" rows="8" placeholder="Enter description here...">{{$taskData['description'] ?? old('description')}}</textarea>
+                                <textarea id="description" name="description" class="form-control" rows="8" placeholder="Enter description here...">{{$taskData['description'] ?? old('description')}}</textarea>
 
                                 @error('description')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="description">{{ $message}}</label>
                                 @enderror
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-gray-700 font-bold mb-2" for="user_id">
+                                <label class="col-form-label" for="user_id">
                                     Assign To
                                 </label>
-                                <select class="form-select block w-full mt-1 select2" id="user_id" name="user_id">
+                                <select data-plugin-selectTwo class="form-control populate" id="user_id" name="user_id">
                                     <?php if (!isset($taskData) && old('user_id') == ''): ?>
                                         <option value="">Choose User</option>
                                         <?php foreach ($users as $keyUser => $valueUser): ?>
@@ -75,21 +96,19 @@
                                 </select>
 
                                 @error('user_id')
-                                    <p class="text-red-500 mt-2 text-sm">{{ $message }}</p>
+                                    <label class="error" for="user_id">{{ $message}}</label>
                                 @enderror
                             </div>
 
-                            <div class="flex items-center justify-between">
+                            <footer class="card-footer text-start mt-2">
                                 <input type="hidden" name="projectUuid" value="{{request()->route('projectUuid') ?? $projectData->uuid}}">
-                                <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                    Submit
-                                </button>
-                            </div>
+                                <button class="btn btn-primary" type="submit">Submit</button>
+                            </footer>
                         </form>
-
                     </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
-</x-app-layout>
+        <!-- end: page -->
+    </section>
+@endsection
